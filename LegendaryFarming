@@ -1,0 +1,57 @@
+function solve(input) {
+    let obj = {
+        motes: 0,
+        fragments: 0,
+        shards: 0
+    };
+    let junkObj = {};
+    let inputArr = input.toLowerCase().split(' ');
+    for (let i = 0; i < inputArr.length; i += 2) {
+        let quantity = Number(inputArr[i]);
+        let material = inputArr[i + 1];
+        if (obj['shards'] >= 250) {
+            console.log(`Shadowmourne obtained!`);
+            obj.shards -= 250;
+            break;
+        } else if (obj['fragments'] >= 250) {
+            obj.fragments -= 250;
+            console.log(`Valanyr obtained!`);
+            break;
+        } else if (obj['motes'] >= 250) {
+            console.log(`Dragonwrath obtained!`);
+            obj.motes -= 250;
+            break;
+        }
+        if (material === 'shards' || material === 'motes' || material === 'fragments') {
+            if (obj.hasOwnProperty(material)) {
+                let oldQuantity = obj[material];
+                let newQuantity = oldQuantity += quantity;
+                obj[material] = newQuantity;
+            }
+        } else {
+            if (junkObj.hasOwnProperty(material)) {
+                let previousQuantity = junkObj[material];
+                let nextQuantity = previousQuantity += quantity;
+                junkObj[material] = nextQuantity;
+            } else {
+                junkObj[material] = quantity;
+            }
+        }
+    }
+
+    Object.entries(obj)
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    Object.entries(junkObj)
+        .sort((a, b) => a[0].localeCompare(b[0]))
+    let arr1 = Array.from(Object.entries(obj)).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    let arr2 = Array.from(Object.entries(junkObj)).sort((a, b) => a[0].localeCompare(b[0]));
+    let arr3 = arr1.concat(arr2);
+    for (const element of arr3) {
+        console.log(`${element[0]}: ${element[1]}`);
+    }
+
+}
+
+
+solve('123 silver 6 shards 8 shards 5 motes 9 fangs 75 motes 103 MOTES 8 Shards 86 Motes 7 stones 19 silver');
+Second test Input: '123 silver 6 shards 8 shards 5 motes 9 fangs 75 motes 103 MOTES 8 Shards 86 Motes 7 stones 19 silver'
